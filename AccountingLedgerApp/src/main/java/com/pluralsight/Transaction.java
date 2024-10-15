@@ -1,27 +1,44 @@
 package com.pluralsight;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class Transaction {
 
-    LocalDate date;
-    LocalTime time;
+    ArrayList<Transaction> ledger = new ArrayList<Transaction>();
+
+
+    String date;
+    String time;
     private String description;
     private String vendor;
-    private double amount;
+    private float amount;
 
-    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount){
+
+    public Transaction(String date, String time, String description, String vendor, float amount) {
         this.date = date;
         this.time = time;
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
-
     }
 
+    public String getDate() {
+        return date;
+    }
 
+    public String getTime() {
+        return time;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
 }
