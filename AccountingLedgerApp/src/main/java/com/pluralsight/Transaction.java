@@ -2,12 +2,8 @@ package com.pluralsight;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class Transaction {
-
-    ArrayList<Transaction> ledger = new ArrayList<Transaction>();
-
 
     LocalDate date;
     LocalTime time;

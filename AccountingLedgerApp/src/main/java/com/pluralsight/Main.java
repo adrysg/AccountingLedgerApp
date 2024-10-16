@@ -1,9 +1,7 @@
 package com.pluralsight;
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.ArrayList;
 import java.io.BufferedReader;
@@ -20,19 +18,7 @@ public class Main {
 
     public static void main(String[] args)  {
 
-        // read from the file and populate the arraylist.
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
-
-            while ((reader.readLine()) != null) {
-                reader.readLine();
-            }
-            reader.close();
-
-        } catch (IOException e) {
-        }
-        //Create a home screen
+//Create a home screen
         do {
             try {
 
@@ -46,7 +32,7 @@ public class Main {
                 System.out.println(" (X) Exit ");
                 System.out.print("Enter Selection: ");
 
-                String selection = scanner.nextLine();
+                String selection = Console.PromptForString();
 
                 System.out.println("------------------------------------------");
 
@@ -66,64 +52,7 @@ public class Main {
             }
         } while (true);
     }
-
-    public static void addDeposit() {
-        //prompt user for deposit info and save to csv file
-        LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now();
-
-        System.out.print("Please enter a description: ");
-        String description = scanner.nextLine();
-        System.out.print("Please enter your deposit amount: ");
-        double depositAmount = scanner.nextDouble();
-        scanner.nextLine();
-        System.out.print("Please enter vendor name: ");
-        String vendorName = scanner.nextLine();
-
-
-        System.out.println("Here is your deposit information: ");
-        System.out.println("Date: " + date);
-        System.out.println("Time: " + time);
-        System.out.println("Description: " + description);
-        System.out.printf("Deposit Amount: " + "%.2f", depositAmount);
-        System.out.println("\nVendor: " + vendorName);
-
-        Transaction t = new Transaction(date, time, description,vendorName, depositAmount);
-        ledger.add(t);
-        saveTransaction();
-        System.out.println("Your transaction has been successfully saved! ");
-
-        //next steps - we have this information, what do we do with it?
-
-    }
-
-    public static void makePayment() {
-        LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now();
-
-        System.out.print("Please enter a description: ");
-        String description = scanner.nextLine();
-        System.out.print("Please enter your deposit amount: ");
-        double depositAmount = scanner.nextDouble();
-        scanner.nextLine();
-        System.out.print("Please enter vendor name: ");
-        String vendorName = scanner.nextLine();
-
-
-        System.out.println("Here is your deposit information: ");
-        System.out.println("Date: " + date);
-        System.out.println("Time: " + time);
-        System.out.println("Description: " + description);
-        System.out.printf("Deposit Amount: " + "%.2f", depositAmount);
-        System.out.println("\nVendor: " + vendorName);
-
-        Transaction t = new Transaction(date, time, description,vendorName, depositAmount * -1);
-        ledger.add(t);
-        saveTransaction();
-        System.out.println("Your transaction has been successfully saved! ");
-
-    }
-
+//Create a ledger screen
     public static void ledgerScreen() {
         //display ledger screen
         System.out.println("Welcome to your Ledger Screen! ");
@@ -134,8 +63,8 @@ public class Main {
         System.out.println(" (P) Payments ");
         System.out.println(" (R) Reports ");
         System.out.println(" (H) Home ");
-        System.out.print("Enter (A), (B), (P), (R) or (H): ");
-        String selection = scanner.nextLine();
+        System.out.print("Enter (A), (D), (P), (R) or (H): ");
+        String selection = Console.PromptForString();
 
         System.out.println("------------------------------------------");
 
@@ -154,6 +83,59 @@ public class Main {
 
     }
 
+    public static void addDeposit() {
+        //prompt user for deposit info and save to csv file
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        System.out.print("Please enter a deposit description: ");
+        String description = Console.PromptForString();
+        System.out.print("Please enter your deposit amount: ");
+        double depositAmount = Console.PromptForDouble();
+        System.out.print("Please enter vendor name: ");
+        String vendorName = Console.PromptForString();
+
+        System.out.println();
+        System.out.println("Here is your deposit information: ");
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + time);
+        System.out.println("Description: " + description);
+        System.out.printf("Deposit Amount: " + "%.2f", depositAmount);
+        System.out.println("\nVendor: " + vendorName);
+
+        Transaction t = new Transaction(date, time, description,vendorName, depositAmount);
+        ledger.add(t);
+        saveTransaction();
+        System.out.println("\nYour transaction has been successfully saved! ");
+
+    }
+
+    public static void makePayment() {
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        System.out.print("Please enter payment description: ");
+        String description = Console.PromptForString();
+        System.out.print("Please enter your payment amount: ");
+        double paymentAmount = Console.PromptForDouble();
+        System.out.print("Please enter vendor name: ");
+        String vendorName = Console.PromptForString();
+
+
+        System.out.println("Here is your deposit information: ");
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + time);
+        System.out.println("Description: " + description);
+        System.out.printf("Payment Amount: " + "%.2f", paymentAmount);
+        System.out.println("\nVendor: " + vendorName);
+
+        Transaction t = new Transaction(date, time, description,vendorName, paymentAmount * -1);
+        ledger.add(t);
+        saveTransaction();
+        System.out.println("Your transaction has been successfully saved! ");
+
+    }
+    
     private static void reports() {
         /*display new screen allowing user to run pre-defined reports or custom search
          * 1) month to date
@@ -163,6 +145,12 @@ public class Main {
          * 5) search by vendor (prompt user for vendor name and display entries)
          * 0) back (go back to report page)
          */
+
+
+
+
+
+
     }
 
     public static void allEntries() {
@@ -171,14 +159,14 @@ public class Main {
         System.out.println("All entries are listed below:\n ");
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
             String line;
 
-            while ((line = reader.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 System.out.println(line);
             }
-            reader.close();
-        } catch (IOException e) {
+            br.close();
+        } catch (Exception e) {
 
         }
     }
@@ -186,18 +174,56 @@ public class Main {
     private static void depositsOnly() {
         System.out.println("Deposit Only Entries:\n ");
 
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line;
 
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.split(Pattern.quote("|"));
+
+               if (tokens.length > 4) {
+                   double amount = Double.parseDouble(tokens[4].trim()); {
+                       if (amount > 0) {
+                           System.out.println(line);
+
+                       }
+                   }
+               }
+            } System.out.println();
+
+            br.close();
+        } catch (Exception e) {
+
+        } ledgerScreen();
     }
 
     private static void paymentsOnly() {
         System.out.println("Payment Only Entries:\n ");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String line;
 
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.split(Pattern.quote("|"));
+
+                if (tokens.length > 4) {
+                    double amount = Double.parseDouble(tokens[4].trim()); {
+                        if (amount < 0) {
+                            System.out.println(line);
+
+                        }
+                    }
+                }
+            } System.out.println();
+
+            br.close();
+        } catch (Exception e) {
+
+        } ledgerScreen();
     }
 
     public static ArrayList<Transaction> getTransaction() {
-        ArrayList<Transaction> ledger = new ArrayList<Transaction>();
-
-
+        ArrayList<Transaction> ledger = new ArrayList<>();
         // this method loads product objects into Transactions
         // and its details are not shown
 
@@ -223,7 +249,8 @@ public class Main {
         }
         return ledger;
     }
-        public static void saveTransaction () {
+
+    public static void saveTransaction () {
 
             try {
 

@@ -1,6 +1,4 @@
 package com.pluralsight;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Scanner;
 
 
@@ -40,8 +38,8 @@ import java.util.Scanner;
             int intInput = Integer.parseInt(value);
             return intInput;
         }
-        public static double PromptForDouble(String prompt){
-            System.out.print(prompt);
+        public static double PromptForDouble(){
+            System.out.print(scanner);
             String userInputs = scanner.nextLine();
             double doubleInput = Double.parseDouble(userInputs);
             return doubleInput;
