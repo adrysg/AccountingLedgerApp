@@ -1,5 +1,9 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Transaction {
@@ -7,27 +11,27 @@ public class Transaction {
     ArrayList<Transaction> ledger = new ArrayList<Transaction>();
 
 
-    String date;
-    String time;
+    LocalDate date;
+    LocalTime time;
     private String description;
     private String vendor;
-    private float amount;
+    private double amount;
 
 
-    public Transaction(String date, String time, String description, String vendor, float amount) {
-        this.date = date;
-        this.time = time;
+    public Transaction(String date, String time, String description, String vendor, double amount) {
+        this.date = LocalDate.parse(date);
+        this.time = LocalTime.parse(time);
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
     }
 
-    public String getDate() {
-        return date;
+    public String getFormattedDate() {
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    public String getTime() {
-        return time;
+    public String getFormattedTime(){
+        return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 
     public String getDescription() {
@@ -38,7 +42,7 @@ public class Transaction {
         return vendor;
     }
 
-    public float getAmount() {
+    public double getAmount() {
         return amount;
     }
 }

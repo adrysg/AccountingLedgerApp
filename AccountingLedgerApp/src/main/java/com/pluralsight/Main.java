@@ -1,13 +1,17 @@
 package com.pluralsight;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.regex.Pattern;
+
 
 public class Main {
 
-    public final static String fileName = "Transactions.csv";
+    public final static File fileName = new File("Transactions.csv");
     public static ArrayList<Transaction> ledger = new ArrayList<Transaction>();
     static Scanner scanner = new Scanner(System.in);
 
@@ -15,8 +19,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         // read from the file and populate the arraylist.
+
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("Transactions.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
             while ((reader.readLine()) != null) {
                 reader.readLine();
@@ -26,6 +31,7 @@ public class Main {
         } catch (IOException e) {
         }
         //Create a home screen
+        do {
             try {
 
                 System.out.println("------------------------------------------");
@@ -56,22 +62,32 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("Invalid Selection");
             }
-        }
+        } while (true);
+    }
 
     public static void addDeposit() {
         //prompt user for deposit info and save to csv file
+
         System.out.print("Please enter a brief description: ");
         String description = scanner.nextLine();
         System.out.print("Please enter your deposit amount: ");
-        float deposit = scanner.nextFloat();
+        double deposit = scanner.nextFloat();
         scanner.nextLine();
         System.out.print("Please enter your name: ");
         String name = scanner.nextLine();
+
 
         System.out.println("Here is your deposit information: ");
         System.out.println("Description: " + description);
         System.out.printf("Deposit Amount: " + "%.2f", deposit);
         System.out.println("\nName: " + name);
+
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        saveTransaction();
+
+
         //next steps - we have this information, what do we do with it?
 
     }
@@ -100,43 +116,105 @@ public class Main {
         System.out.println("------------------------------------------");
 
         if (selection.equalsIgnoreCase("A")) {
-            //display all entries
-            //loop through the arraylist to show all entries.
-            System.out.println("All entries are listed below:\n ");
-
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader("Transactions.csv"));
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-                reader.close();
-            } catch (IOException e) {}
-        }
-        else if (selection.equalsIgnoreCase("D")) {
-            //display deposit only entries
-        }
-        else if (selection.equalsIgnoreCase("P")) {
-            //display payments only(negative entries)
-        }
-        else if (selection.equalsIgnoreCase("R")) {
-            /*display new screen allowing user to run pre-defined reports or custom search
-             * 1) month to date
-             * 2) previous month
-             * 3) year to date
-             * 4) previous year
-             * 5) search by vendor (prompt user for vendor name and display entries)
-             * 0) back (go back to report page)
-             */
-        }
-        else if (selection.equalsIgnoreCase("H")) {
+            allEntries();
+        } else if (selection.equalsIgnoreCase("D")) {
+            depositsOnly();
+        } else if (selection.equalsIgnoreCase("P")) {
+            paymentsOnly();
+        } else if (selection.equalsIgnoreCase("R")) {
+            reports();
+        } else if (selection.equalsIgnoreCase("H")) {
             return;
         }
         System.out.println("------------------------------------------");
 
     }
+
+    private static void reports(){
+        /*display new screen allowing user to run pre-defined reports or custom search
+         * 1) month to date
+         * 2) previous month
+         * 3) year to date
+         * 4) previous year
+         * 5) search by vendor (prompt user for vendor name and display entries)
+         * 0) back (go back to report page)
+         */
+    }
+
+    public static void allEntries() {
+        //display all entries
+        //loop through the arraylist to show all entries.
+        System.out.println("All entries are listed below:\n ");
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("Transactions.csv"));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+
+        }
+    }
+
+    private static void depositsOnly() {
+    }
+
+    private static void paymentsOnly(){
+    }
+
+
+    public static ArrayList<Transaction> getTransaction() {
+        ArrayList<Transaction> ledger = new ArrayList<Transaction>();
+
+        // this method loads product objects into Transactions
+        // and its details are not shown
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+
+            String input;
+            while ((input = br.readLine()) != null) {
+                String[] tokens = input.split(Pattern.quote("|"));
+                String date = tokens[0];
+                String time = tokens[1];
+                String description = tokens[2];
+                String vendor = tokens[3];
+                double amount = Double.parseDouble(tokens[4]);
+                Transaction t = new Transaction(date, time, description, vendor, amount);
+                ledger.add(t);
+            }
+            br.close();
+
+        } catch (Exception e) {
+            System.out.println("ERROR!!");
+            e.printStackTrace();
+        }
+        return ledger;
+    }
+
+    public static void saveTransaction(){
+
+        try{
+
+            FileWriter fw = new FileWriter(fileName);
+
+            for(Transaction t : ledger){
+                String data = t.getFormattedDate() + "|" + t.getFormattedTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount() + "\n";
+                fw.write(data);
+            }
+
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("FILE WRITE ERROR");
+        }
+
+    }
+
 }
+
 
 
 
