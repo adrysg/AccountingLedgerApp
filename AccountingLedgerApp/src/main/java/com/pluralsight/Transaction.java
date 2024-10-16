@@ -13,17 +13,25 @@ public class Transaction {
 
     LocalDate date;
     LocalTime time;
-    private String description;
-    private String vendor;
-    private double amount;
+    public String description;
+    public String vendor;
+    public double depositAmount;
 
 
-    public Transaction(String date, String time, String description, String vendor, double amount) {
+    public Transaction(String date, String time, String description, String vendor, double depositAmount) {
         this.date = LocalDate.parse(date);
         this.time = LocalTime.parse(time);
         this.description = description;
         this.vendor = vendor;
-        this.amount = amount;
+        this.depositAmount = Double.parseDouble(String.valueOf(depositAmount));
+    }
+
+    public Transaction(String date, String time, String description, double depositAmount, String vendorName) {
+        getFormattedDate();
+        getFormattedTime();
+        getDescription();
+        getVendor();
+
     }
 
     public String getFormattedDate() {
@@ -43,6 +51,6 @@ public class Transaction {
     }
 
     public double getAmount() {
-        return amount;
+        return depositAmount;
     }
 }

@@ -67,26 +67,30 @@ public class Main {
 
     public static void addDeposit() {
         //prompt user for deposit info and save to csv file
+        LocalDateTime now = LocalDateTime.now();
+        String Date = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String Time = now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-        System.out.print("Please enter a brief description: ");
+        System.out.print("Please enter a description: ");
         String description = scanner.nextLine();
         System.out.print("Please enter your deposit amount: ");
-        double deposit = scanner.nextFloat();
+        double depositAmount = scanner.nextDouble();
         scanner.nextLine();
-        System.out.print("Please enter your name: ");
-        String name = scanner.nextLine();
+        System.out.print("Please enter vendor name: ");
+        String vendorName = scanner.nextLine();
 
 
         System.out.println("Here is your deposit information: ");
+        System.out.println("Date: " + Date);
+        System.out.println("Time: " + Time);
         System.out.println("Description: " + description);
-        System.out.printf("Deposit Amount: " + "%.2f", deposit);
-        System.out.println("\nName: " + name);
+        System.out.printf("Deposit Amount: " + "%.2f", depositAmount);
+        System.out.println("\nVendor: " + vendorName);
 
-        LocalDateTime now = LocalDateTime.now();
-        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
+        Transaction t = new Transaction(Date, Time, description, depositAmount, vendorName);
+        ledger.add(t);
         saveTransaction();
-
+        System.out.println("Your transaction has been successfully saved! ");
 
         //next steps - we have this information, what do we do with it?
 
