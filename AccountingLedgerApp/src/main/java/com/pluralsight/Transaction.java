@@ -1,7 +1,5 @@
 package com.pluralsight;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,21 +16,14 @@ public class Transaction {
     public double depositAmount;
 
 
-    public Transaction(String date, String time, String description, String vendor, double depositAmount) {
-        this.date = LocalDate.parse(date);
-        this.time = LocalTime.parse(time);
+    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double depositAmount) {
+        this.date = date;
+        this.time = time;
         this.description = description;
         this.vendor = vendor;
         this.depositAmount = Double.parseDouble(String.valueOf(depositAmount));
     }
 
-    public Transaction(String date, String time, String description, double depositAmount, String vendorName) {
-        getFormattedDate();
-        getFormattedTime();
-        getDescription();
-        getVendor();
-
-    }
 
     public String getFormattedDate() {
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -53,4 +44,16 @@ public class Transaction {
     public double getAmount() {
         return depositAmount;
     }
+
+    public String toString() {
+        return "Ledger{" +
+                "date=" + date +
+                ", time=" + time.format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
+                ", description='" + description + '\'' +
+                ", vendor='" + vendor + '\'' +
+                ", amount=" + depositAmount +
+                '}';
+    }
+
+
 }

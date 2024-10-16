@@ -1,6 +1,8 @@
 package com.pluralsight;
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.ArrayList;
@@ -12,11 +14,11 @@ import java.util.regex.Pattern;
 public class Main {
 
     public final static File fileName = new File("Transactions.csv");
-    public static ArrayList<Transaction> ledger = new ArrayList<Transaction>();
+    public static ArrayList<Transaction> ledger = getTransaction();
     static Scanner scanner = new Scanner(System.in);
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
 
         // read from the file and populate the arraylist.
 
@@ -67,9 +69,8 @@ public class Main {
 
     public static void addDeposit() {
         //prompt user for deposit info and save to csv file
-        LocalDateTime now = LocalDateTime.now();
-        String Date = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String Time = now.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
 
         System.out.print("Please enter a description: ");
         String description = scanner.nextLine();
@@ -81,13 +82,13 @@ public class Main {
 
 
         System.out.println("Here is your deposit information: ");
-        System.out.println("Date: " + Date);
-        System.out.println("Time: " + Time);
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + time);
         System.out.println("Description: " + description);
         System.out.printf("Deposit Amount: " + "%.2f", depositAmount);
         System.out.println("\nVendor: " + vendorName);
 
-        Transaction t = new Transaction(Date, Time, description, depositAmount, vendorName);
+        Transaction t = new Transaction(date, time, description,vendorName, depositAmount);
         ledger.add(t);
         saveTransaction();
         System.out.println("Your transaction has been successfully saved! ");
@@ -97,11 +98,30 @@ public class Main {
     }
 
     public static void makePayment() {
-        //prompt user for debit info and save to csv file
-        System.out.print("Please enter your payment amount: ");
-        double amount = scanner.nextDouble();
-        System.out.print("Please enter your debit information: ");
-        int info = scanner.nextInt();
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        System.out.print("Please enter a description: ");
+        String description = scanner.nextLine();
+        System.out.print("Please enter your deposit amount: ");
+        double depositAmount = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("Please enter vendor name: ");
+        String vendorName = scanner.nextLine();
+
+
+        System.out.println("Here is your deposit information: ");
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + time);
+        System.out.println("Description: " + description);
+        System.out.printf("Deposit Amount: " + "%.2f", depositAmount);
+        System.out.println("\nVendor: " + vendorName);
+
+        Transaction t = new Transaction(date, time, description,vendorName, depositAmount * -1);
+        ledger.add(t);
+        saveTransaction();
+        System.out.println("Your transaction has been successfully saved! ");
+
     }
 
     public static void ledgerScreen() {
@@ -134,7 +154,7 @@ public class Main {
 
     }
 
-    private static void reports(){
+    private static void reports() {
         /*display new screen allowing user to run pre-defined reports or custom search
          * 1) month to date
          * 2) previous month
@@ -151,7 +171,7 @@ public class Main {
         System.out.println("All entries are listed below:\n ");
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("Transactions.csv"));
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -164,14 +184,19 @@ public class Main {
     }
 
     private static void depositsOnly() {
+        System.out.println("Deposit Only Entries:\n ");
+
+
     }
 
-    private static void paymentsOnly(){
-    }
+    private static void paymentsOnly() {
+        System.out.println("Payment Only Entries:\n ");
 
+    }
 
     public static ArrayList<Transaction> getTransaction() {
         ArrayList<Transaction> ledger = new ArrayList<Transaction>();
+
 
         // this method loads product objects into Transactions
         // and its details are not shown
@@ -182,8 +207,8 @@ public class Main {
             String input;
             while ((input = br.readLine()) != null) {
                 String[] tokens = input.split(Pattern.quote("|"));
-                String date = tokens[0];
-                String time = tokens[1];
+                LocalDate date = LocalDate.parse(tokens[0]);
+                LocalTime time = LocalTime.parse(tokens[1]);
                 String description = tokens[2];
                 String vendor = tokens[3];
                 double amount = Double.parseDouble(tokens[4]);
@@ -198,27 +223,25 @@ public class Main {
         }
         return ledger;
     }
+        public static void saveTransaction () {
 
-    public static void saveTransaction(){
+            try {
 
-        try{
+                FileWriter fw = new FileWriter(fileName, true);
 
-            FileWriter fw = new FileWriter(fileName);
+                for (Transaction t : ledger) {
+                    String data = t.getFormattedDate()
+                            + "|" + t.getFormattedTime() + "|" + t.getDescription() + "|"
+                            + t.getVendor() + "|" + t.getAmount() + "\n";
+                    fw.write(data);
+                }
 
-            for(Transaction t : ledger){
-                String data = t.getFormattedDate() + "|" + t.getFormattedTime() + "|" + t.getDescription() + "|" + t.getVendor() + "|" + t.getAmount() + "\n";
-                fw.write(data);
+                fw.close();
+            } catch (Exception e) {
+                System.out.println("FILE WRITE ERROR");
             }
 
-            fw.close();
-        } catch (Exception e) {
-            System.out.println("FILE WRITE ERROR");
         }
 
+
     }
-
-}
-
-
-
-
