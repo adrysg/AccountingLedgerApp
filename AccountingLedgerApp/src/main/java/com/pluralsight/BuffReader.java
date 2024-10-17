@@ -33,8 +33,7 @@ public class BuffReader {
             br.close();
 
         } catch (Exception e) {
-            System.out.println("ERROR!!");
-            e.printStackTrace();
+            System.out.println("Error!");
         }
         return ledger;
     }
