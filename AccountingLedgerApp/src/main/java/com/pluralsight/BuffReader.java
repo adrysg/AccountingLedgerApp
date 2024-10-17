@@ -2,7 +2,6 @@ package com.pluralsight;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class BuffReader {
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
-
+            br.readLine();
             String input;
             while ((input = br.readLine()) != null) {
                 String[] tokens = input.split(Pattern.quote("|"));
@@ -38,24 +37,6 @@ public class BuffReader {
         return ledger;
     }
 
-    public static void saveTransaction () {
-
-        try {
-
-            FileWriter fw = new FileWriter(fileName, true);
-
-            for (Transaction t : ledger) {
-                String data = t.getFormattedDate()
-                        + "|" + t.getFormattedTime() + "|" + t.getDescription() + "|"
-                        + t.getVendor() + "|" + t.getAmount() + "\n";
-                fw.write(data);
-            }
-
-            fw.close();
-        } catch (Exception e) {
-            System.out.println("FILE WRITE ERROR");
-        }
-
     }
 
-}
+

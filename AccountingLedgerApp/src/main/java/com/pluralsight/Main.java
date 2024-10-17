@@ -1,12 +1,20 @@
 package com.pluralsight;
+import java.io.File;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import static com.pluralsight.BuffReader.getTransaction;
+import static com.pluralsight.Console.PromptForString;
+
 
 public class Main {
+    public final static File fileName = new File("Transactions.csv");
+    public static ArrayList<Transaction> ledger = getTransaction();
 
-    public static ArrayList<Transaction> ledger = BuffReader.getTransaction();
-
+    public static void main(String[] args){
+        homeScreen();
+    }
 
     public static void homeScreen() {
 
@@ -24,7 +32,7 @@ public class Main {
                 System.out.println(" (X) Exit ");
                 System.out.print("Enter Selection: ");
 
-                String selection = Console.PromptForString();
+                String selection = PromptForString();
 
                 System.out.println("------------------------------------------");
 
@@ -35,6 +43,7 @@ public class Main {
                 } else if (selection.equalsIgnoreCase("L")) {
                     LedgerScreen.ledgerScreen();
                 } else if (selection.equalsIgnoreCase("X")) {
+                    System.out.println("Thank you for using Accounting Ledger App!");
                     return;
                 } else {
                     System.out.println("Invalid Selection");
@@ -55,7 +64,7 @@ public class Main {
         System.out.print("Please enter your deposit amount: ");
         double depositAmount = Console.PromptForDouble();
         System.out.print("Please enter vendor name: ");
-        String vendorName = Console.PromptForString();
+        String vendorName =Console.PromptForString();
 
         System.out.println();
         System.out.println("Here is your deposit information: ");
@@ -66,8 +75,8 @@ public class Main {
         System.out.println("\nVendor: " + vendorName);
 
         Transaction t = new Transaction(date, time, description, vendorName, depositAmount);
-        Main.ledger.add(t);
-        BuffReader.saveTransaction();
+        ledger.add(t);
+        saveTransaction();
         System.out.println("\nYour transaction has been successfully saved! ");
 
     }
@@ -77,11 +86,11 @@ public class Main {
         LocalTime time = LocalTime.now();
 
         System.out.print("Please enter payment description: ");
-        String description = Console.PromptForString();
+        String description = PromptForString();
         System.out.print("Please enter your payment amount: ");
         double paymentAmount = Console.PromptForDouble();
         System.out.print("Please enter vendor name: ");
-        String vendorName = Console.PromptForString();
+        String vendorName = PromptForString();
 
 
         System.out.println("Here is your deposit information: ");
@@ -92,9 +101,29 @@ public class Main {
         System.out.println("\nVendor: " + vendorName);
 
         Transaction t = new Transaction(date, time, description, vendorName, paymentAmount * -1);
-        Main.ledger.add(t);
-        BuffReader.saveTransaction();
+        ledger.add(t);
+        saveTransaction();
         System.out.println("Your transaction has been successfully saved! ");
+
+    }
+
+    public static void saveTransaction () {
+
+        try {
+
+            FileWriter fw = new FileWriter(fileName);
+
+            for (Transaction t : ledger) {
+                String data = t.getFormattedDate()
+                        + "|" + t.getFormattedTime() + "|" + t.getDescription() + "|"
+                        + t.getVendor() + "|" + t.getAmount() + "\n";
+                fw.write(data);
+            }
+
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("FILE WRITE ERROR");
+        }
 
     }
 

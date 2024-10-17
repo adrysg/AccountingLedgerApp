@@ -1,10 +1,6 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.time.LocalDate;
-import java.util.regex.Pattern;
-import static com.pluralsight.BuffReader.fileName;
+
 
 public class ReportsScreen {
 
@@ -27,70 +23,46 @@ public class ReportsScreen {
         System.out.println(" 0) Go back");
         int selection = Console.PromptForInt();
 
-        if(selection == 1){
+        if (selection == 1) {
             monthToDate();
         }
-        if(selection == 2){
+        if (selection == 2) {
             previousMonth();
         }
-        if(selection == 3){
+        if (selection == 3) {
             yearToDate();
         }
-        if(selection == 4){
+        if (selection == 4) {
             previousYear();
         }
-        if(selection == 5){
+        if (selection == 5) {
             searchByVendor();
         }
-        if(selection == 0){
+        if (selection == 0) {
             reports();
         }
+    }
 
+    public static void monthToDate() {
+        System.out.println("Below are your Month to Date transactions: \n");
 
     }
 
-    public static void monthToDate(){
-        System.out.println("Below are your Month to Date transactions: \n");
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                String[] tokens = line.split(Pattern.quote("|"));
-
-                if (tokens.length > 4) {
-                    LocalDate date = LocalDate.parse(tokens[0]); {
-                        if (date.isBefore(LocalDate.now())) {
-                            System.out.println(line);
-
-                        }
-                    }
-                }
-            } System.out.println();
-
-            br.close();
-        } catch (Exception e) {
-            System.out.println("Error!");
+        public static void previousMonth () {
 
         }
 
-    }
+        public static void yearToDate () {
 
+        }
 
-    public static void previousMonth(){
+        public static void previousYear () {
 
-    }
+        }
 
-    public static void yearToDate(){
+        public static void searchByVendor () {
 
-    }
-
-    public static void previousYear(){
-
-    }
-
-    public static void searchByVendor(){
-
-    }
+        }
 
 }
+

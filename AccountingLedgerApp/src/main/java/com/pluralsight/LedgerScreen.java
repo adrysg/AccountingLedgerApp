@@ -12,7 +12,6 @@ public class LedgerScreen {
          /*This is my ledger screen class. Here you can review all entries,
      deposit only entries, payment only entries, and ledger reports.*/
 
-
         System.out.println("Welcome to your Ledger Screen! ");
         System.out.println("------------------------------------------");
         System.out.println("Please make a selection: ");
@@ -40,7 +39,6 @@ public class LedgerScreen {
         System.out.println("------------------------------------------");
 
     }
-
 
     public static void allEntries() {
         //display all entries
