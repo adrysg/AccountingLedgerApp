@@ -9,7 +9,7 @@ public class LedgerScreen {
 
     public static void ledgerScreen() {
 
-         /*This is my ledger screen class. Here you can review all entries,
+         /*This is my ledger screen class. Here the user can review all entries,
      deposit only entries, payment only entries, and ledger reports.*/
 
         System.out.println("Welcome to your Ledger Screen! ");
@@ -39,6 +39,8 @@ public class LedgerScreen {
         System.out.println("------------------------------------------");
 
     }
+
+    //these are the methods for each selection being called into action.
 
     public static void allEntries() {
         //display all entries

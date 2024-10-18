@@ -9,11 +9,13 @@ import java.util.regex.Pattern;
 
 public class BuffReader {
 
-    public final static File fileName = new File("Transactions.csv");
-    public static ArrayList<Transaction> ledger = getTransaction();
+    /*This is my reader class. The buffered reader reads through the transactions.csv file.
+        These lines of code below represent a tokens array which takes each value in the transactions.csv
+        file and adds it to the array. the values containing numbers are parsed into a String to represent
+        either the date or amount.*/
 
-    //this is my reader class. The buffered reader reads through
-    //the transactions.csv file.
+    public final static File fileName = new File("Transactions.csv");
+
 
     public static ArrayList<Transaction> getTransaction() {
         ArrayList<Transaction> ledger = new ArrayList<>();
@@ -40,6 +42,6 @@ public class BuffReader {
         return ledger;
     }
 
-    }
+}
 
 

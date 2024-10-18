@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import static com.pluralsight.BuffReader.getTransaction;
 import static com.pluralsight.Console.PromptForString;
 
+//This is my main class, it serves as my Accounting Ledger App Home Screen.
 
 public class Main {
     public final static File fileName = new File("Transactions.csv");
@@ -18,9 +19,10 @@ public class Main {
 
     public static void homeScreen() {
 
-//This is my main class, it serves as my Home Screen.
         do {
             try {
+
+                //Prompting the user to select what they'd like to do.
 
                 System.out.println("------------------------------------------");
                 System.out.println("Welcome to the Accounting Ledger App!");
@@ -32,12 +34,12 @@ public class Main {
                 System.out.println(" (X) Exit ");
                 System.out.print("Enter Selection: ");
 
+                //this code adds the user's response into the selection string.
                 String selection = PromptForString();
 
                 System.out.println("------------------------------------------");
 
                 // mapping user selection with its corresponding method.
-
                 if (selection.equalsIgnoreCase("D")) {
                     addDeposit();
                 } else if (selection.equalsIgnoreCase("P")) {
@@ -57,7 +59,8 @@ public class Main {
     }
 
     //These are my home screen functions,
-    // these methods allow the user to add a deposit or make a payment.
+    // these methods allow the user to add a deposit or make a payment
+    //it then saves into the transactions.csv file.
 
     public static void addDeposit() {
         //prompt user for deposit info and save to csv file

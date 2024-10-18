@@ -10,16 +10,13 @@ import java.util.regex.Pattern;
 
 public class ReportsScreen {
 
+    /*this is my reports screen, it allows the user to search for their transactions
+    based on certain date ranges. The functions for this class are also below.
+     */
+
     public final static File fileName = new File("Transactions.csv");
     public static void reports() {
-        /*display new screen allowing user to run pre-defined reports or custom search
-         * 1) month to date
-         * 2) previous month
-         * 3) year to date
-         * 4) previous year
-         * 5) search by vendor (prompt user for vendor name and display entries)
-         * 0) back (go back to report page)
-         */
+
         System.out.println("Welcome to your reports screen");
         System.out.println("Please select how you'd like to view your transactions: ");
         System.out.println(" 1) Month to Date ");
@@ -40,7 +37,7 @@ public class ReportsScreen {
         }
         if (selection == 3) {
             yearToDate();
-        }
+        }                                              //mapping each selection to it's corresponding methods.
         if (selection == 4) {
             previousYear();
         }
@@ -58,7 +55,7 @@ public class ReportsScreen {
         System.out.print("Below are your Month to Date transactions: ");
         System.out.println("------------------------------------------");
 
-        //the buffered reader reads through the transactions file to find selected entries.
+        //here I use the buffered reader to read through the file to find users selected entries.
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -70,7 +67,9 @@ public class ReportsScreen {
 
                 String[] tokens = line.split(Pattern.quote("|"));
 
-                if (tokens.length > 4) {
+
+                if (tokens.length > 4) {   //this line ensures the tokens array has more than 4 values
+
                     LocalDate transactionsDate = LocalDate.parse(tokens[0].trim(), formatedDate);
                     if(transactionsDate.getMonth() == date.getMonth()
                             || transactionsDate.getYear() == date.getYear())
@@ -120,7 +119,7 @@ public class ReportsScreen {
             }
         }
 
-    // this method looks for the entries for this year up to the current date.
+// this method looks for the entries for this year up to the current date.
     public static void yearToDate () {
 
         System.out.print("Below are your Year to Date Transactions: ");
@@ -152,7 +151,7 @@ public class ReportsScreen {
         }
     }
 
-    // this method searches for entries from the previous year on the file.
+// this method searches for entries from the previous year on the file.
     public static void previousYear () {
         System.out.print("Below are transactions for last year: ");
         System.out.println("------------------------------------------");
@@ -184,7 +183,7 @@ public class ReportsScreen {
         }
     }
 
-    // this method allows the user to search by vendor upon selection.
+// this method allows the user to search by vendor upon selection.
     public static void searchByVendor () {
         System.out.print("Please enter the vendor's name: ");
         String searchedVendor = Console.PromptForString().trim();
