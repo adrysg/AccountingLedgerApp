@@ -12,6 +12,9 @@ public class BuffReader {
     public final static File fileName = new File("Transactions.csv");
     public static ArrayList<Transaction> ledger = getTransaction();
 
+    //this is my reader class. The buffered reader reads through
+    //the transactions.csv file.
+
     public static ArrayList<Transaction> getTransaction() {
         ArrayList<Transaction> ledger = new ArrayList<>();
 

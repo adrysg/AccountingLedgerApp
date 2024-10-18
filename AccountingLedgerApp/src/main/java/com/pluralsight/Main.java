@@ -36,6 +36,8 @@ public class Main {
 
                 System.out.println("------------------------------------------");
 
+                // mapping user selection with its corresponding method.
+
                 if (selection.equalsIgnoreCase("D")) {
                     addDeposit();
                 } else if (selection.equalsIgnoreCase("P")) {
@@ -53,6 +55,9 @@ public class Main {
             }
         } while (true);
     }
+
+    //These are my home screen functions,
+    // these methods allow the user to add a deposit or make a payment.
 
     public static void addDeposit() {
         //prompt user for deposit info and save to csv file
